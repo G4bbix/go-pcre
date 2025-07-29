@@ -488,15 +488,11 @@ func (m *Matcher) ExtractString() []string {
 	}
 	extract := make([]string, m.groups+1)
 	extract[0] = m.subjects
-	//fmt.Println(extract[0])
-	//fmt.Println(m.ovector)
 	for i := 1; i <= m.groups; i++ {
-		//fmt.Println(i)
 		x0 := m.ovector[2*i]
 		x1 := m.ovector[2*i+1]
 		extract[i] = m.subjects[x0:x1]
 	}
-	//fmt.Print(extract)
 	return extract
 }
 
@@ -511,43 +507,28 @@ func (m *Matcher) ExtractAllString() []string {
 
 	var extract []string
 	extract = append(extract, m.subjects)
-	// subjectEnd = len(m.subjects))
 
 	if m.ovector[3] != 0 {
 		extract = append(extract, m.subjects[0:m.ovector[2]])
-		// extract[1] = m.subjects[0:m.ovector[3] - 1]
 	}
 
-	// //fmt.Println(extract[0])
-	//fmt.Println(m.ovector)
 	for i := len(extract) - 1; i <= m.groups; i++ {
-		//fmt.Println(i)
 		x0 := m.ovector[2*i]
 		x1 := m.ovector[2*i+1]
 		extract = append(extract, m.subjects[x0:x1])
 
-		//fmt.Println(x1)
-	  //fmt.Print(extract)
-	  //fmt.Println("")
-	  //fmt.Printf("%d\n", m.ovector[2*i+2])
 		if x1 != m.ovector[2*i+2] {
 			x0 = m.ovector[2*i+1] 
 
-			//fmt.Printf("len ovector %d\n", len(m.ovector))
-			//fmt.Printf("len cond %d\n", 2*(i+1) + 3)
 			if len(m.ovector) == 2*(i+1) + 3 {
 				x1 = C.int(len(m.subjects))
 			} else {
 				x1 = m.ovector[(2*i+1)+1]
 			}
-			//fmt.Printf("%d %d\n", x0, x1)
 			extract = append(extract, m.subjects[x0:x1])
-		// //fmt.Print(extract)
 		}
 
 	}
-	// //fmt.Println("test")
-	// //fmt.Print(extract)
 	return extract
 }
 
