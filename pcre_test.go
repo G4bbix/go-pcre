@@ -243,10 +243,34 @@ func TestExtract(t *testing.T) {
 		t.Error("Full line unavailable: ", i[0])
 	}
 	if i[1] != "c" {
-		t.Error("First match group no as expected: ", i[1])
+		t.Error("First match group not as expected: ", i[1])
 	}
 	if i[2] != "d" {
-		t.Error("Second match group no as expected: ", i[2])
+		t.Error("Second match group not as expected: ", i[2])
+	}
+}
+
+func TestExtractAll(t *testing.T) {
+	re := MustCompile("(bc)d?(e)", 0)
+	m := re.MatcherString("abcdefg", 0)
+	i := m.ExtractAllString()
+	if i[0] != "abcdefg" {
+		t.Error("Full line unavailable: ", i[0])
+	}
+	if i[1] != "a" {
+		t.Error("First non match group not as expected: ", i[1])
+	}
+	if i[2] != "bc" {
+		t.Error("First match group not as expected: ", i[2])
+	}
+	if i[3] != "d" {
+		t.Error("Second non-match group not as expected: ", i[3])
+	}
+	if i[4] != "e" {
+		t.Error("Second match group not as expected: ", i[4])
+	}
+	if i[5] != "fg" {
+		t.Error("Third non-match group not as expected: ", i[5])
 	}
 }
 
