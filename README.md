@@ -10,6 +10,13 @@ Perl Compatible Regular Expressions (PCRE).
 Install the package for Debian as follows:
 
     sudo apt-get install libpcre++-dev
+
+Install the package for Debian as follows:
+
+    sudo pacman -S pcre
+
+Install the go package as follows
+
     go get github.com/gijsbers/go-pcre
 
 ## Usage
@@ -25,6 +32,8 @@ This is a clone of
 [golang-pkg-pcre](http://git.enyo.de/fw/debian/golang-pkg-pcre.git)
 by Florian Weimer, which has been placed on Github by Glenn Brown,
 so it can be fetched automatically by Go's package installer.
+
+Gabriel Winkler added `Matcher.ExtractAllString()`.
 
 Glenn Brown added `FindIndex()` and `ReplaceAll()`
 to mimic functions in Go's default regexp package.
