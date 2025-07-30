@@ -496,21 +496,23 @@ func (m *Matcher) ExtractString() []string {
 	return extract
 }
 
-
 // ExtractAllString returns a slice of strings for a single match.
 // The first string contains the complete match.
 // Subsequent strings in the slice contain the captured groups as well as the other parts of the string.
 // If there was no match then nil is returned.
-func (m *Matcher) ExtractAllString() []string {
+// The indicies of the elements containing the captures groups are returned as an int slice
+func (m *Matcher) ExtractAllString() ([]string, []int) {
 	if !m.matches {
-		return nil
+		return nil, nil
 	}
 
 	var extract []string
 	extract = append(extract, m.subjects)
+	var capturesGroupIndicies []int
+
 	// If no capture groups
 	if len(m.ovector) == 3 {
-		return extract
+		return extract, capturesGroupIndicies
 	}
 
 	if m.ovector[2] != 0 {
@@ -520,12 +522,13 @@ func (m *Matcher) ExtractAllString() []string {
 	for i := 1; i <= m.groups; i++ {
 		x0 := m.ovector[2*i]
 		x1 := m.ovector[2*i+1]
+		capturesGroupIndicies = append(capturesGroupIndicies, len(extract))
 		extract = append(extract, m.subjects[x0:x1])
 
 		if x1 != m.ovector[2*i+2] {
-			x0 = m.ovector[2*i+1] 
+			x0 = m.ovector[2*i+1]
 
-			if len(m.ovector) <= 2*(i+1) + 3 {
+			if len(m.ovector) <= 2*(i+1)+3 {
 				x1 = C.int(len(m.subjects))
 			} else {
 				x1 = m.ovector[(2*i+1)+1]
@@ -534,7 +537,7 @@ func (m *Matcher) ExtractAllString() []string {
 		}
 
 	}
-	return extract
+	return extract, capturesGroupIndicies
 }
 
 // GroupIndices returns the numbered capture group positions of the last

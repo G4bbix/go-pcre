@@ -253,7 +253,7 @@ func TestExtract(t *testing.T) {
 func TestExtractAll(t *testing.T) {
 	re := MustCompile("(bc)d?(e)", 0)
 	m := re.MatcherString("abcdefg", 0)
-	i := m.ExtractAllString()
+	i, j := m.ExtractAllString()
 	if i[0] != "abcdefg" {
 		t.Error("Full line unavailable: ", i[0])
 	}
@@ -272,12 +272,18 @@ func TestExtractAll(t *testing.T) {
 	if i[5] != "fg" {
 		t.Error("Third non-match group not as expected: ", i[5])
 	}
+	if j[0] != 2 {
+		t.Error("Index of first capture group not as expected: ", j[0])
+	} 
+	if j[1] != 4 {
+		t.Error("Index of second capture group not as expected: ", j[1])
+	} 
 }
 
 func TestExtractAll2(t *testing.T) {
 	re := MustCompile("^([0-9]+)", 0)
 	m := re.MatcherString("12 twelfe", 0)
-	i := m.ExtractAllString()
+	i, j := m.ExtractAllString()
 	if i[0] != "12 twelfe" {
 		t.Error("Full line unavailable: ", i[0])
 	}
@@ -286,6 +292,9 @@ func TestExtractAll2(t *testing.T) {
 	}
 	if i[2] != " twelfe" {
 		t.Error("Second match group not as expected: ", i[2])
+	}
+	if j[0] != 1 {
+		t.Error("Index of first capture group not as expected: ", j[0])
 	}
 }
 
