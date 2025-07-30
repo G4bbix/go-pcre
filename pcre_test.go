@@ -274,6 +274,21 @@ func TestExtractAll(t *testing.T) {
 	}
 }
 
+func TestExtractAll2(t *testing.T) {
+	re := MustCompile("^([0-9]+)", 0)
+	m := re.MatcherString("12 twelfe", 0)
+	i := m.ExtractAllString()
+	if i[0] != "12 twelfe" {
+		t.Error("Full line unavailable: ", i[0])
+	}
+	if i[1] != "12" {
+		t.Error("First match group not as expected: ", i[1])
+	}
+	if i[2] != " twelfe" {
+		t.Error("Second match group not as expected: ", i[2])
+	}
+}
+
 func TestReplaceAll(t *testing.T) {
 	re := MustCompile("foo", 0)
 	// Don't change at ends.
